@@ -1,12 +1,15 @@
 #include <iostream>
+#include "Game.h"
+
 using namespace std;
 
 void startGame() {
     cout << "\n--- Game started ---\n";
+    GameStart();
 }
 
 int main() {
-    int choice;
+    char choice;
     cout << "------------Battleship------------\n";
     cout << "1. Play\n2. Rules of game\n0. Exit\n";
 
@@ -14,11 +17,11 @@ int main() {
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (choice == 1) {
+        if (choice == '1') {
             startGame();
             break;
         }
-        else if (choice == 2) {
+        else if (choice == '2') {
             cout << "\nRules of the game \"Battleship\"\n\n";
             cout << "Goal of the game:\nDestroy all enemy ships before your opponent destroys yours.\n\n";
 
@@ -59,7 +62,7 @@ int main() {
                 cout << "Invalid option!\n\n";
             }
         }
-        else if (choice == 0) {
+        else if (choice == '0') {
             cout << "Bye!";
             break;
         }
