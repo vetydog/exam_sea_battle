@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 const int SIZE = 10;
 
