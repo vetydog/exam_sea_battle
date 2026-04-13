@@ -10,8 +10,11 @@ int GameStart() {
 	initField(player);
 	initField(computer);
 	printField(player);
-	PlaceShips(ships, player);
-	printField(player);
+	while (shipscount > 0) {
+		PlaceShips(ships, player);
+		printField(player);
+	}
+	
 
 	
 	for (int i = 0; i < shipscount; i++) {
