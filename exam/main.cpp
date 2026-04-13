@@ -1,9 +1,12 @@
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include "Game.h"
 
 using namespace std;
 
 void startGame() {
+    srand(time(0));
     cout << "\n--- Game started ---\n";
     GameStart();
 }
@@ -55,7 +58,7 @@ int main() {
                 break;
             }
             else if (choice2 == 'n' || choice2 == 'N') {
-                cout<<"Bey!\n";
+                cout << "Bey!\n";
                 break;
             }
             else {
@@ -70,5 +73,4 @@ int main() {
             cout << "Invalid option\n\n";
         }
     }
-
 }
