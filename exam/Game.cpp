@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 bool CanPlaceShip(char field[SIZE][SIZE], int row, int col, int size, char direction) {
 
     for (int i = 0; i < size; i++) {
@@ -52,22 +53,64 @@ void PlaceShipOnField(char field[SIZE][SIZE], int row, int col, int size, char d
 }
 
 int GameStart() {
-	char player[SIZE][SIZE];
-	char computer[SIZE][SIZE];
-	int ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
-	int ai_ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
+    char player[SIZE][SIZE];
+    char computer[SIZE][SIZE];
 
-	initField(computer);
-	AIPlaceShips(ai_ships,computer);
+    int ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
+    int ai_ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
+
+    char choice;
+
+    initField(computer);
+    AIPlaceShips(ai_ships, computer);
     printField(computer);
 
-	initField(player);
-	printField(player);
+    do {
+        cout << "\nEnter option:\n";
+        cout << "1 - place ships manually\n";
+        cout << "2 - AI place ships\n";
 
-	while (shipscount > 0) {
-		PlaceShips(ships, player);
-		printField(player);
-	}
+        cin >> choice;
 
-	return 0;
+        if (choice != '1' && choice != '2') {
+            cout << "Invalid option! Try again.\n";
+        }
+
+    } while (choice != '1' && choice != '2');
+
+    initField(player);
+
+    if (choice == '1') {
+
+        while (shipscount > 0) {
+            PlaceShips(ships, player);
+            printField(player);
+        }
+    }
+    else if (choice == '2') {
+
+        char answer;
+
+        do {
+            initField(player);
+            AIPlaceShips(ships, player);
+            printField(player);
+
+            do {
+                cout << "Do you like the position of ships (y/n)? ";
+                cin >> answer;
+
+                if (answer != 'y' && answer != 'n') {
+                    cout << "Invalid option! Try again.\n";
+                }
+
+            } while (answer != 'y' && answer != 'n');
+
+        } while (answer == 'n');
+    }
+    else {
+        cout << "Invalid option!\n";
+    }
+
+    return 0;
 }
