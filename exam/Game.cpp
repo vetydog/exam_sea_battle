@@ -1,6 +1,6 @@
 #include "Field.h"
-#include "Player.h";
-#include "Computer.h";
+#include "Player.h"
+#include "Computer.h"
 
 using namespace std;
 
