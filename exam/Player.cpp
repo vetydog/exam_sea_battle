@@ -8,7 +8,8 @@ using namespace std;
 
 int shipscount = 10;
 
-bool PlayerShoot(char enemy[SIZE][SIZE], int& hits) {
+
+bool PlayerShoot(char enemy[SIZE][SIZE], ShipInfo computerShips[], int& hits) {
     char letter;
     int row;
     cout << "Your turn!\nLetter A-J: ";
@@ -16,22 +17,38 @@ bool PlayerShoot(char enemy[SIZE][SIZE], int& hits) {
     letter = toupper(letter) - 'A';
     cout << "Row 0-9: ";
     cin >> row;
+
     if (row < 0 || row >= SIZE || letter < 0 || letter >= SIZE) {
         cout << "Invalid coordinates!\n";
         return false;
     }
-    if (enemy[row][letter] == 'S') {
+
+    if (enemy[row][letter] == 'S' || enemy[row][letter] == 'X') {
         enemy[row][letter] = 'X';
         hits++;
-        cout << "\"Hit\" - ship is there\n";
+        cout << "Player: \"Hit\" - ship is there\n";
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < computerShips[i].size; j++) {
+                if (computerShips[i].cells[j][0] == row && computerShips[i].cells[j][1] == letter) {
+                    computerShips[i].hits++;
+                    if (computerShips[i].hits == computerShips[i].size) {
+                        computerShips[i].destroyed = true;
+                        cout << "Player: \"Sunk\" - the whole ship is destroyed\n";
+                    }
+                    return true;
+                }
+            }
+        }
         return true;
     }
     else {
         enemy[row][letter] = 'o';
-        cout << "\"Miss\" - no ship\n";
+        cout << "Player: \"Miss\" - no ship\n";
         return false;
     }
 }
+
 
 bool RemoveShip(int ships[], int& count, int size) {
     for (int i = 0; i < count; i++) {
@@ -63,8 +80,10 @@ int PlaceShips(int ships[], char field[SIZE][SIZE], ShipInfo playerShips[], int&
     do {
         cout << "Enter letter (A-J): ";
         cin >> letter;
-    } while (!isalpha(letter));
-    letter = toupper(letter) - 'A';
+        letter = toupper(letter);
+    } while (letter < 'A' || letter > 'J');
+
+    letter = letter - 'A';
 
     do {
         cout << "Enter number (0-9): ";

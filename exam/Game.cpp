@@ -45,33 +45,38 @@ void PlaceShipOnField(char field[SIZE][SIZE], ShipInfo& ship, int r, int c, int 
     for (int i = 0; i < size; i++) {
         int nr = r;
         int nc = c;
-        if (dir == 'h') nc += i;
-        else nr += i;
+        if (dir == 'h') 
+            nc += i;
+        else 
+            nr += i;
         field[nr][nc] = 'S';
         ship.cells[i][0] = nr;
         ship.cells[i][1] = nc;
     }
 }
 
-void GameLoop(char player[SIZE][SIZE], char computer[SIZE][SIZE],
-    ShipInfo playerShips[], ShipInfo computerShips[]) {
+void GameLoop(char player[SIZE][SIZE], char computer[SIZE][SIZE],ShipInfo playerShips[], ShipInfo computerShips[]) {
     int playerHits = 0;
     int aiHits = 0;
+
     while (playerHits < 20 && aiHits < 20) {
-        PlayerShoot(computer, playerHits);
-        if (playerHits == 20) {
-            cout << "YOU WIN!\n";
-            break;
-        }
-        int x, y;
+        bool playerHit;
         do {
-            x = rand() % SIZE;
-            y = rand() % SIZE;
-        } while (player[x][y] == 'X' || player[x][y] == 'o');
-        Shoot(player, playerShips, aiHits, x, y);
+            cout << "\n--- Enemy field (computer) ---\n";
+            printEnemyField(computer);
+            playerHit = PlayerShoot(computer, computerShips, playerHits);
+            if (playerHits == 20) {
+                cout << "\n=== YOU WIN! ===\n";
+                return;
+            }
+        } while (playerHit);
+
+        AITurn(player, playerShips, aiHits);
+        cout << "\n--- Your field ---\n";
+        printField(player); 
         if (aiHits == 20) {
-            cout << "AI WINS!\n";
-            break;
+            cout << "\n=== AI WINS! ===\n";
+            return;
         }
     }
 }
@@ -80,14 +85,13 @@ int GameStart() {
     srand(time(0));
     char player[SIZE][SIZE];
     char computer[SIZE][SIZE];
-    int ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
-    int ai_ships[10] = { 4,3,3,2,2,2,1,1,1,1 };
+    int ships[10] = {4,3,3,2,2,2,1,1,1,1};
+    int ai_ships[10] = {4,3,3,2,2,2,1,1,1,1};
     char choice;
 
     initField(computer);
     AIPlaceShips(ai_ships, computer, computerShips);
     printField(computer);
-
     do {
         cout << "\nEnter option:\n1 - place ships manually\n2 - AI place ships\n";
         cin >> choice;

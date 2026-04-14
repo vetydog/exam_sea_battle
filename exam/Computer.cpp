@@ -6,6 +6,10 @@
 using namespace std;
 
 bool Shoot(char field[SIZE][SIZE], ShipInfo ships[], int& hits, int x, int y) {
+    char letter = 'A' + y; 
+    int row = x;
+    cout << "AI shoots at " << letter << row << ": ";
+
     if (field[x][y] != 'S') {
         field[x][y] = 'o';
         cout << "\"Miss\" - no ship\n";
@@ -22,13 +26,26 @@ bool Shoot(char field[SIZE][SIZE], ShipInfo ships[], int& hits, int x, int y) {
                 ships[i].hits++;
                 if (ships[i].hits == ships[i].size) {
                     ships[i].destroyed = true;
-                    cout << "\"Sunk\" - the whole ship is destroyed\n";
+                    cout << "AI: \"Sunk\" - the whole ship is destroyed\n";
                 }
                 return true;
             }
         }
     }
     return true;
+}
+
+void AITurn(char playerField[SIZE][SIZE], ShipInfo playerShips[], int& aiHits) {
+    bool hit;
+    do {
+        int x, y;
+        do {
+            x = rand() % SIZE;
+            y = rand() % SIZE;
+        } while (playerField[x][y] == 'X' || playerField[x][y] == 'o');
+
+        hit = Shoot(playerField, playerShips, aiHits, x, y);
+    } while (hit && aiHits < 20);
 }
 
 char getRandomDirection() {

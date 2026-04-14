@@ -4,3 +4,4 @@
 
 void AIPlaceShips(int ships[], char field[SIZE][SIZE], ShipInfo computerShips[]);
 bool Shoot(char field[SIZE][SIZE], ShipInfo ships[], int& hits, int x, int y);
+void AITurn(char playerField[SIZE][SIZE], ShipInfo playerShips[], int& aiHits);
